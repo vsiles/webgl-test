@@ -13,7 +13,12 @@
                 .null { color: magenta; }
                 .key { color: red; }
         </style>
+    </head>
 
+    <body>
+        <h1> Simple WebGL test, hosted by github</h1>
+        <canvas id="glcanvas" width="640" height="480"></canvas>
+    
         <script src="https://mdn.github.io/webgl-examples/tutorial/gl-matrix.js"></script>
         <script src="webgl-demo.js"></script>
         <script>
@@ -36,14 +41,16 @@
                     return '<span class="' + cls + '">' + match + '</span>';
                 });
             }
-            var url = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Box/glTF/Box.gltf';
+            var base_url = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Box/glTF';
+            var json_url = base_url + '/Box.gltf';
+            var bin_url = base_url + '/Box0.bin';
+
             function update_raw_json(data) {
                 var placeholder = document.body.appendChild(document.createElement('pre'));
                 placeholder.innerHTML = data;
             }
-            $.getJSON(url, function (data) {
+            $.getJSON(json_url, function (data) {
                 var json = JSON.stringify(data, undefined, 4);
-                console.log(syntaxHighlight(json));
                 update_raw_json(syntaxHighlight(json));
             }).done (function() {
                 console.log("success");
@@ -52,11 +59,23 @@
             }).always(function() {
                 console.log("ok");
             });
-        </script>
-    </head>
+<!--
+            var oReq = new XMLHttpRequest();
+            oReq.open("GET", bin_url, true);
+            oReq.responseType = "arraybuffer";
 
-    <body>
-        <h1> Simple WebGL test, hosted by github</h1>
-        <canvas id="glcanvas" width="640" height="480"></canvas>
+            oReq.onload = function (oEvent) {
+                var arrayBuffer = oReq.response;
+                if (arrayBuffer) {
+                    var byteArray = new Uint8Array(arrayBuffer);
+                    for (var i = 0; i < byteArray.byteLength; i++) {
+                        console.log(byteArray[i]);
+                    }
+                }
+            };
+
+            oReq.send(null);
+            -->
+        </script>
     </body>
 </html>
