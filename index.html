@@ -13,51 +13,50 @@
                 .null { color: magenta; }
                 .key { color: red; }
         </style>
+
+        <script src="https://mdn.github.io/webgl-examples/tutorial/gl-matrix.js"></script>
+        <script src="webgl-demo.js"></script>
+        <script>
+            <!-- taken from https://stackoverflow.com/questions/4810841/how-can-i-pretty-print-json-using-javascript -->
+            function syntaxHighlight(json) {
+                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                    var cls = 'number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
+            }
+            var url = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Box/glTF/Box.gltf';
+            function update_raw_json(data) {
+                var placeholder = document.body.appendChild(document.createElement('pre'));
+                placeholder.innerHTML = data;
+            }
+            $.getJSON(url, function (data) {
+                var json = JSON.stringify(data, undefined, 4);
+                console.log(syntaxHighlight(json));
+                update_raw_json(syntaxHighlight(json));
+            }).done (function() {
+                console.log("success");
+            }).fail(function() {
+                console.log("error");
+            }).always(function() {
+                console.log("ok");
+            });
+        </script>
     </head>
 
     <body>
         <h1> Simple WebGL test, hosted by github</h1>
         <canvas id="glcanvas" width="640" height="480"></canvas>
     </body>
-
-    <script src="https://mdn.github.io/webgl-examples/tutorial/gl-matrix.js"></script>
-    <script src="webgl-demo.js"></script>
-    <script>
-        <!-- taken from https://stackoverflow.com/questions/4810841/how-can-i-pretty-print-json-using-javascript -->
-        function syntaxHighlight(json) {
-            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                var cls = 'number';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) {
-                        cls = 'key';
-                    } else {
-                        cls = 'string';
-                    }
-                } else if (/true|false/.test(match)) {
-                    cls = 'boolean';
-                } else if (/null/.test(match)) {
-                    cls = 'null';
-                }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
-        }
-        var url = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Box/glTF/Box.gltf';
-        function update_raw_json(data) {
-            var placeholder = document.body.appendChild(document.createElement('pre'));
-            placeholder.innerHTML = data;
-        }
-        $.getJSON(url, function (data) {
-            var json = JSON.stringify(data, undefined, 4);
-            console.log(syntaxHighlight(json));
-            update_raw_json(syntaxHighlight(json));
-        }).done (function() {
-            console.log("success");
-        }).fail(function() {
-            console.log("error");
-        }).always(function() {
-            console.log("ok");
-        });
-
-    </script>
 </html>
